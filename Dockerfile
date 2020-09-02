@@ -1,6 +1,7 @@
 #FROM land007/golang-tfjs-face:latest
-#FROM land007/l4t-tensorflow:face
-FROM land007/l4t-golang-tensorflow:1.15.0
+FROM land007/l4t-golang-tfjs-face:latest
+#docker build -t land007/l4t-face-kit:latest .
+#cd ~/docker_build/l4t-golang-node && docker build -t land007/l4t-golang-node . && cd ~/docker_build/l4t-golang-tfjs && docker build -t land007/l4t-golang-tfjs-face . && cd ~/docker_build/l4t-face-kit && docker build -t land007/face-kit .
 
 MAINTAINER Yiqiu Jia <yiqiujia@hotmail.com>
 
@@ -14,8 +15,8 @@ RUN ln -s $GOPATH/src/google.golang.org/grpc ~/ && \
 ADD build.sh /
 ADD protos $GOPATH/src/google.golang.org/grpc/eyecool/protos
 ADD golang /golang
-RUN chmod +x /build.sh && /build.sh && ls -la /golang
-RUN ln -s /golang ~/ && \
+RUN chmod +x /build.sh && /build.sh && ls -la /golang && \
+    ln -s /golang ~/ && \
 	ln -s /golang /home/land007
 ENV FACE_CONTAINER_NAME=eyecool-cpp-grpc_ \
 	MATCH_CONTAINER_NAME=eyecool-cpp-grpc_ \
@@ -87,10 +88,10 @@ ADD heap_svg.sh /golang_
 RUN chmod +x /golang_/heap.sh && \
 	chmod +x /golang_/heap_svg.sh
 #node.js
-RUN apt-get install -y pkg-config
-RUN . $HOME/.nvm/nvm.sh && cd / && npm install -g node-pre-gyp && npm install @tensorflow/tfjs@1.5.1 @tensorflow/tfjs-node@1.5.1 face-api.js axios soap easy-soap-request xml-js
-RUN . $HOME/.nvm/nvm.sh && cd /node_modules/@tensorflow/tfjs-node && node-pre-gyp install --build-from-source
-RUN rm -rf /node_/node_modules
+RUN apt-get install -y pkg-config && \
+    . $HOME/.nvm/nvm.sh && cd / && npm install -g node-pre-gyp && npm install @tensorflow/tfjs@1.5.1 @tensorflow/tfjs-node@1.5.1 face-api.js axios soap easy-soap-request xml-js && \
+    . $HOME/.nvm/nvm.sh && cd /node_modules/@tensorflow/tfjs-node && node-pre-gyp install --build-from-source && \
+    rm -rf /node_/node_modules
 #face
 ADD node/face/node_modules/bitmap-js /node_/face/node_modules/bitmap-js
 ADD node/face/protos /node_/face/protos
@@ -174,7 +175,8 @@ RUN rm -f /node_/main.js && \
 	echo "eyecool:1234567" | /usr/sbin/chpasswd && \
 	sed -i "s/^eyecool:x.*/eyecool:x:0:1000::\/home\/eyecool:\/bin\/bash/g" /etc/passwd && \
 	cp -R /home/land007/* /home/eyecool
-ENV ZENITH_URL="" \
+ENV PATH=$PATH:/usr/local/go/bin:/usr/local/go/path/bin \
+    ZENITH_URL="" \
 #1,马坡，2安外 ,
 	LOCATION="" \
 #抓拍机专用属性,人员点位，从哪儿进的(北门进入)
@@ -197,8 +199,8 @@ ADD node/face-api.js/examples/examples-nodejs/output_1554197462330_96_133.jpg.bm
 ADD node/face-api.sh /node_
 
 # ADD protos /protos
-RUN cd /usr/local/go/path/src/google.golang.org/grpc/eyecool/ && protoc -I protos/ protos/face.proto --go_out=plugins=grpc:protos
-RUN ls /usr/local/go/path/src/google.golang.org/grpc/eyecool/protos
+RUN cd /usr/local/go/path/src/google.golang.org/grpc/eyecool/ && protoc -I protos/ protos/face.proto --go_out=plugins=grpc:protos && \
+    ls /usr/local/go/path/src/google.golang.org/grpc/eyecool/protos
 
 ADD node/face-api.sh /node_
 RUN sed -i 's/\r$//' /node_/face-api.sh && chmod +x /node_/face-api.sh

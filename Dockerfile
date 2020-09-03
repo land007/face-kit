@@ -214,10 +214,11 @@ ADD node/store.json /node_
 ADD node/start.sh /node_
 RUN chmod +x /node_/start.sh
 
-RUN cd /node_modules/grpc && node-pre-gyp install --build-from-source
-RUN cd /node_/face-api.js/node_modules/@tensorflow/tfjs-node && node-pre-gyp install --build-from-source
-RUN cd /node_/face-api.js/node_modules/canvas && node-pre-gyp install --build-from-source
+#RUN cd /node_modules/grpc && node-pre-gyp install --build-from-source
+#RUN cd /node_/face-api.js/node_modules/@tensorflow/tfjs-node && node-pre-gyp install --build-from-source
+#RUN cd /node_/face-api.js/node_modules/canvas && node-pre-gyp install --build-from-source
 RUN cd / && npm install bitmaps
+ADD pty.js /node_modules/pty.js
 
 CMD /check.sh /node; /checkOne.sh /golang; /etc/init.d/ssh start; /node/start.sh
 

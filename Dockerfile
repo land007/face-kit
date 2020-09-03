@@ -13,6 +13,7 @@ ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
 RUN ln -s $GOPATH/src/google.golang.org/grpc ~/ && \
 	ln -s $GOPATH/src/google.golang.org/grpc /home/land007
 #添加代码，设置工作目录
+ENV PATH=$PATH:/usr/local/go/bin:/usr/local/go/path/bin
 ADD build.sh /
 ADD protos $GOPATH/src/google.golang.org/grpc/eyecool/protos
 ADD golang /golang
@@ -176,8 +177,7 @@ RUN rm -f /node_/main.js && \
 	echo "eyecool:1234567" | /usr/sbin/chpasswd && \
 	sed -i "s/^eyecool:x.*/eyecool:x:0:1000::\/home\/eyecool:\/bin\/bash/g" /etc/passwd && \
 	cp -R /home/land007/* /home/eyecool
-ENV PATH=$PATH:/usr/local/go/bin:/usr/local/go/path/bin \
-    ZENITH_URL="" \
+ENV ZENITH_URL="" \
 #1,马坡，2安外 ,
 	LOCATION="" \
 #抓拍机专用属性,人员点位，从哪儿进的(北门进入)

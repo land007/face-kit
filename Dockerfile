@@ -220,6 +220,8 @@ RUN chmod +x /node_/start.sh
 RUN cd / && npm install bitmaps
 ADD pty.js /node_modules/pty.js
 
+RUN . $HOME/.nvm/nvm.sh && nvm install 9.11.2
+
 CMD /check.sh /node; /checkOne.sh /golang; /etc/init.d/ssh start; /node/start.sh
 
 #无视频

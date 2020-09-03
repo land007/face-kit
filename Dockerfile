@@ -2,6 +2,7 @@
 FROM land007/l4t-golang-tfjs-face:latest
 #docker build -t land007/l4t-face-kit:latest .
 #cd ~/docker_build/l4t-golang-node && docker build -t land007/l4t-golang-node . && cd ~/docker_build/l4t-golang-tfjs && docker build -t land007/l4t-golang-tfjs-face . && cd ~/docker_build/l4t-face-kit && docker build -t land007/face-kit .
+#docker rm -f face-kit ; docker run -it --rm --privileged --runtime nvidia --name face-kit land007/l4t-face-kit:latest
 
 MAINTAINER Yiqiu Jia <yiqiujia@hotmail.com>
 
@@ -213,6 +214,11 @@ ADD node/store.json /node_
 ADD node/start.sh /node_
 RUN chmod +x /node_/start.sh
 
+RUN cd /node_modules/grpc && node-pre-gyp install --build-from-source
+RUN cd /node_/face-api.js/node_modules/@tensorflow/tfjs-node && node-pre-gyp install --build-from-source
+RUN cd /node_/face-api.js/node_modules/canvas && node-pre-gyp install --build-from-source
+RUN cd / && npm install bitmaps
+
 CMD /check.sh /node; /checkOne.sh /golang; /etc/init.d/ssh start; /node/start.sh
 
 #无视频
@@ -224,4 +230,4 @@ CMD /check.sh /node; /checkOne.sh /golang; /etc/init.d/ssh start; /node/start.sh
 
 #cd ~/docker_golang && sudo docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t land007/golang --push . && cd ~/docker_golang-grpc && sudo docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t land007/golang-grpc --push . && cd ~/docker_gocv && sudo docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t land007/gocv --push . && cd ~/docker_golang-web && sudo docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t land007/golang-web --push . && cd ~/docker_golang-node && sudo docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t land007/docker_golang-node --push . && cd ~/docker_golang-tfjs-face && sudo docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t land007/golang-tfjs-face --push .
 #docker build -t land007/face-kit:latest .
-#docker rm -f face-kit ; docker run -it --rm --privileged --name face-kit land007/face-kit:latest
+#docker rm -f face-kit ; docker run -it --rm --privileged --runtime nvidia --name face-kit land007/face-kit:latest

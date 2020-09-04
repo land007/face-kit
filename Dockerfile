@@ -3,6 +3,7 @@ FROM land007/l4t-golang-tfjs-face:latest
 #docker build -t land007/l4t-face-kit:latest .
 #cd ~/docker_build/l4t-golang-node && docker build -t land007/l4t-golang-node . && cd ~/docker_build/l4t-golang-tfjs && docker build -t land007/l4t-golang-tfjs-face . && cd ~/docker_build/l4t-face-kit && docker build -t land007/face-kit .
 #docker rm -f face-kit ; docker run -it --rm --privileged --runtime nvidia --name face-kit land007/l4t-face-kit:latest
+#/check.sh /node; /checkOne.sh /golang; /etc/init.d/ssh start
 
 MAINTAINER Yiqiu Jia <yiqiujia@hotmail.com>
 
@@ -221,6 +222,21 @@ RUN cd / && npm install bitmaps
 ADD pty.js /node_modules/pty.js
 
 RUN . $HOME/.nvm/nvm.sh && nvm install 9.11.2
+
+RUN rm -rf /usr/local/go/path/src/github.com
+ADD github.com.tar.gz /usr/local/go/path/src/
+#ADD src/github.com /usr/local/go/path/src/github.com
+RUN rm -rf /usr/local/go/path/src/google.golang.org/grpc
+ADD src/google.golang.org/grpc /usr/local/go/path/src/google.golang.org/grpc
+RUN go get -u github.com/kataras/neffos && \
+    go get -u github.com/gobwas/ws && \
+    go get -u github.com/gorilla/websocket && \
+    go get github.com/nats-io/nats.go/
+#RUN export https_proxy=http://jiayiqiu.vicp.net:28000 && \
+#    go get -u github.com/mediocregopher/radix && \
+#    go get -u google.golang.org/grpc && \
+#    export https_proxy=
+#RUN cd /golang_ && go build main.go
 
 CMD /check.sh /node; /checkOne.sh /golang; /etc/init.d/ssh start; /node/start.sh
 

@@ -1,0 +1,55 @@
+<!-- /views/upload.html -->
+<html>
+
+<head>
+    <title>查比分</title>
+    <link rel="shortcut icon" href="{{.rootPath}}/favicon.ico" />
+    <link type="text/css" rel="stylesheet" href="{{.rootPath}}/css/dropzone.css" />
+    <script type="text/javascript" src="{{.rootPath}}/js/dropzone_1v1.js"></script>
+    <script type="text/javascript" src="{{.rootPath}}/js/jquery.min.js"></script>
+    <script type="text/javascript" src="{{.rootPath}}/js/exif.js"></script>
+    <script type="text/javascript" src="{{.rootPath}}/js/vue.js"></script>
+    <script type="text/javascript" src="{{.rootPath}}/js/image.js"></script>
+    <script type="text/javascript">
+		var rootPath = '{{.rootPath}}';
+		var lid = '{{.lid}}';
+// 		var cid = '{{.identityId}}:{{.featureId}}';
+		var cid = '{{.featureId}}';
+		var name = '{{.personnelInfo.FileAlias}}';
+	    var level = '{{.level}}';
+	    var fileAlias = '{{.personnelInfo.FileAlias}}';
+    </script>
+    <link type="text/css" rel="stylesheet" href="{{.rootPath}}/css/eyecool.css">
+</head>
+<body style="margin: 4%;">
+    <div id="app" class="lga">
+        <h1 v-if="level == 'release'" >查比分</h1>
+        <h1 v-else>查比分（${ level }版）</h1>
+        <div>
+<!--             <img src="{{.rootPath}}/public/{{.fileDir}}thumbnail_{{.cid}}" class="scrollLoading2" onload="loadImageOne(this)"> -->
+			<a href="{{.rootPath}}/public/{{.fileDir}}{{.cid}}" target="_blank">
+            	<img src="{{.rootPath}}/public/{{.fileDir}}{{.cid}}" class="scrollLoading2" cropping="{{.rootPath}}/public/{{.fileDir}}cropping_{{.cid}}" onload="loadImageOne(this)" style="height: 300px;">
+            </a>
+        </div>
+        <div v-if="faceInfos.length > 1">
+        	<span>选定：</span>
+        	<button v-for="(item, index) in faceInfos" v-bind:value="item.identity_id" v-on:click="personnelSelection(index)">人员${index+1}</button>
+        </div>
+        <div style="padding-top: 20px;">
+        	<span onclick="playAudo('{{.rootPath}}/public/{{.fileDir}}{{.cid}}.wav');">姓名：</span>
+        	<input type="text" value="{{.personnelInfo.FileAlias}}" id="fileAlias">
+        	<button v-on:click="personnelReName">修改</button>
+        </div>
+    </div>
+    <!-- 3 -->
+    <form action="{{.rootPath}}/rest/uploads" method="POST" class="dropzone" id="my-dropzone">
+        <div class="fallback">
+            <input name="file" type="file" multiple />
+            <input name="cid" type="hidden" value="{{.cid}}"/>
+            <input name="lid" type="hidden" value="{{.lid}}"/>
+            <input type="submit" value="Upload" />
+        </div>
+    </form>
+    <script type="text/javascript" src="{{.rootPath}}/js/onebyone.js"></script>
+</body>
+</html>

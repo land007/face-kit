@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://service.external.eyecool.com/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="SoapServiceImplService" targetNamespace="http://service.external.eyecool.com/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://service.external.eyecool.com/" elementFormDefault="unqualified" targetNamespace="http://service.external.eyecool.com/" version="1.0">
+
+  <xs:element name="syncPersonInfo" type="tns:syncPersonInfo"/>
+
+  <xs:element name="syncPersonInfoResponse" type="tns:syncPersonInfoResponse"/>
+
+  <xs:complexType name="syncPersonInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="syncPersonInfoResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="syncPersonInfo">
+    <wsdl:part element="tns:syncPersonInfo" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="syncPersonInfoResponse">
+    <wsdl:part element="tns:syncPersonInfoResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ISoapService">
+    <wsdl:operation name="syncPersonInfo">
+      <wsdl:input message="tns:syncPersonInfo" name="syncPersonInfo">
+    </wsdl:input>
+      <wsdl:output message="tns:syncPersonInfoResponse" name="syncPersonInfoResponse">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SoapServiceImplServiceSoapBinding" type="tns:ISoapService">
+    <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="syncPersonInfo">
+      <soap12:operation soapAction="" style="document"/>
+      <wsdl:input name="syncPersonInfo">
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="syncPersonInfoResponse">
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SoapServiceImplService">
+    <wsdl:port binding="tns:SoapServiceImplServiceSoapBinding" name="SoapServiceImplPort">
+      <soap12:address location="http://182.18.19.131:8288/eyecool/ws/syncPersonInfo"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

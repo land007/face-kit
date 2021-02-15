@@ -1,0 +1,69 @@
+<!-- /views/upload.html -->
+<html>
+
+<head>
+    <title>以图搜图</title>
+    <link rel="shortcut icon" href="{{.rootPath}}/favicon.ico"/>
+    <link type="text/css" rel="stylesheet" href="{{.rootPath}}/css/dropzone.css"/>
+    <script type="text/javascript" src="{{.rootPath}}/js/dropzone_yuan.js"></script>
+    <script type="text/javascript" src="{{.rootPath}}/js/jquery.min.js"></script>
+<!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
+<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.14.1/lodash.min.js"></script> -->
+    <script type="text/javascript" src="{{.rootPath}}/js/vue.js"></script>
+    <script type="text/javascript" src="{{.rootPath}}/js/lodash.min.js"></script>
+    <script type="text/javascript" src="{{.rootPath}}/js/exif.js"></script>
+    <script type="text/javascript" src="{{.rootPath}}/js/image.js"></script>
+    <script type="text/javascript">
+    	var rootPath = '{{.rootPath}}';
+    	var lid = '{{.lid}}';
+    	var cid = '{{.cid}}';
+    	var level = '{{.level}}';
+    </script>
+    <link type="text/css" rel="stylesheet" href="{{.rootPath}}/css/index.css"/>
+    <link type="text/css" rel="stylesheet" href="{{.rootPath}}/css/eyecool.css"/>
+</head>
+
+<body>
+    <div id="app" class="lga">
+        <h1 v-if="level == 'release'" >${ lid }以图搜图</h1>
+        <h1 v-else>${ lid }以图搜图（${ level }版）</h1>
+        <div class="dleft">
+            <span>选择图库：</span>
+            <select v-model="lid" v-on:change="onChange">
+                <option v-for="option in options" v-bind:value="option.value">
+                    ${option.text}
+                </option>
+            </select>
+            <!-- <span>Selected：${ lid }</span> -->
+        </div>
+        <div class="dright">
+            <a :href="url">去图库管理</a>
+        </div>
+    </div>
+    <!-- 3 -->
+    <form action="{{.rootPath}}/rest/uploads" method="POST" class="dropzone" id="my-dropzone">
+        <div class="fallback">
+            <input name="file" type="file" multiple />
+            <input name="id" type="hidden" value="{{.id}}" multiple/>
+            <input type="submit" value="Upload" />
+        </div>
+    </form>
+    <div id="list-complete-demo" class="demo">
+    <transition-group name="list-complete" tag="p">
+        <div
+        v-for="(item, index) in items"
+        v-bind:key="item.feature_id"
+        class="list-complete-item div1"
+        >
+        <!-- <img v-bind:src="'{{.rootPath}}/public/uploads/' + item.feature_id.substring(0,2) + '/thumbnail_' + item.feature_id" class="scrollLoading"> -->
+        <img v-bind:src="currentImage(index)"  class="scrollLoading" onload="loadImage(this)">
+        <div>
+            <p class="p1">${item.match_score}</p>
+            <p class="p2">分</p>
+        </div>
+        </div>
+    </transition-group>
+    </div>
+    <script type="text/javascript" src="{{.rootPath}}/js/onebymany.js"></script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+    	<meta name="viewport" content="width=device-width,initial-scale=0.3 minimum-scale=0.2, maximum-scale=0.9, user-scalable=no"/>
+		<title>民生园区</title>
+		<script type="text/javascript" src="../jsmpeg-master/jsmpeg.min.js"></script>
+		<script type="text/javascript" src="../js/socket.io.js"></script>
+		<script type="text/javascript" src="../js/jquery-1.11.1.js"></script>
+		<script type="text/javascript" src="../js/transform.js"></script>
+		<script type="text/javascript" src="../js/vue.js"></script>
+		<script type="text/javascript" src="../js/lodash.js"></script>
+		<script type="text/javascript" src="../js/stats.js"></script>
+		<script type="text/javascript" src="../js/facex.js"></script>
+		<script type="text/javascript" src="../js/qwebchannel.js"></script>
+		<script type="text/javascript">
+			var kuang_border_style = '2px solid #00FFFF';
+			var some_max = 4;
+			var stranger_max = 4;
+			var realtime_max = 7;
+			var complete_max = 13;
+			var stats_left = '255px';
+			var stats_top = '39px';
+			var videoDiv = {
+				video0:{x: 1, y: 1, w: 640, h: 360, f: 15},
+				video1:{x: 643, y: 1, w: 640, h: 360, f: 15},
+				video2:{x: 1, y: 363, w: 640, h: 360, f: 15},
+				video3:{x: 643, y: 363, w: 640, h: 360, f: 15}
+			};
+// 			window.onload = function() {
+// 		        new QWebChannel(qt.webChannelTransport, function(channel) {
+// 		          window.appObj = channel.objects.appObj;
+// // 		          var videoW = 960;
+// // 		          var videoH = 540;
+// 		          var videoW = 640;
+// 		          var videoH = 360;
+// // 		          appObj.createVideoView( "video1", "rtsp://admin:abcd1234@192.168.0.234:554/cam/realmonitor?channel=1&subtype=0", 1, 1, videoW, videoH, 15 );
+// 		          appObj.createVideoView( "video1", "rtsp://admin:admin@192.168.0.99:8557/h264", 1, 1, videoW, videoH, 15 );
+// 		          appObj.createVideoView( "video2", "rtsp://admin:admin@192.168.0.203:8557/h264", 643, 1, videoW, videoH, 15 );
+// 		          appObj.createVideoView( "video3", "rtsp://admin:admin@192.168.0.99:8557/h264", 1, 363, videoW, videoH, 15 );
+// 		          appObj.createVideoView( "video4", "rtsp://admin:admin@192.168.0.203:8557/h264", 643, 363, videoW, videoH, 15 );
+// // 		          appObj.createVideoView( "video2", "rtsp://192.168.0.99/h264", 10 + 10 + videoW, 10, videoW, videoH, 15 );
+// //		          appObj.createVideoView( "video3", "rtsp://192.168.0.203/h264", 10, 10 + 10 + videoH, videoW, videoH, 15 );
+// //		          appObj.createVideoView( "video4", "rtsp://admin:abcd1234@192.168.0.234:554/cam/realmonitor?channel=1&subtype=0", 10 + 10 + videoW, 10 + 10 + videoH, videoW, videoH, 15 );
+// 		        });
+// 		      }
+		</script>
+		<link rel="stylesheet" type="text/css" href="css/vip-style.css" />
+	</head>
+	<body>
+		<div class="container">
+			<!-- 视频流LIST -->
+			<div class="video-box">
+				<!-- 1路大屏 隐藏 -->
+<!-- 				<video width="1280" height="720" id="big-v"> -->
+<!-- 					<source src="myvideo.mp4" type="video/mp4"> -->
+<!-- 					</source> -->
+<!-- 					<source src="myvideo.ogv" type="video/ogg"> -->
+<!-- 					</source> -->
+<!-- 					<source src="myvideo.webm" type="video/webm"> -->
+<!-- 					</source> -->
+<!-- 					<object width="" height="" type="application/x-shockwave-flash" data="myvideo.swf"> -->
+<!-- 						<param name="movie" value="myvideo.swf" /> -->
+<!-- 						<param name="flashvars" value="autostart=true&amp;file=myvideo.swf" /> -->
+<!-- 					</object> -->
+<!-- 					当前浏览器不支持 video直接播放，点击这里下载视频： <a href="myvideo.webm">下载视频</a> -->
+<!-- 				</video> -->
+
+				<!-- 4路上视频 -->
+				<div id="td0" style="float: left; width: 640px; height: 360px; border: 1px solid #3effff; position: relative;">
+					<canvas id="canvas0" style="zoom: 0.5"></canvas>
+					<div id="Stats-output0" style="display: none; position: fixed; top: 0px; left: 0px; cursor: pointer; opacity: 0.9; z-index: 10000; transform: translateZ(100px);"></div>
+		        </div>
+				<div id="td1" style="float: left; width: 640px; height: 360px; border: 1px solid #3effff; position: relative;">
+					<canvas id="canvas1" style="zoom: 0.5"></canvas>
+					<div id="Stats-output1" style="display: none; position: fixed; top: 0px; left: 0px; cursor: pointer; opacity: 0.9; z-index: 10000; transform: translateZ(100px);"></div>
+		        </div>
+				<div id="td2" style="float: left; width: 640px; height: 360px; border: 1px solid #3effff; position: relative;">
+					<canvas id="canvas2" style="zoom: 0.5"></canvas>
+					<div id="Stats-output2" style="display: none; position: fixed; top: 0px; left: 0px; cursor: pointer; opacity: 0.9; z-index: 10000; transform: translateZ(100px);"></div>
+		        </div>
+				<div id="td3" style="float: left; width: 640px; height: 360px; border: 1px solid #3effff; position: relative;">
+					<canvas id="canvas3" style="zoom: 0.5"></canvas>
+					<div id="Stats-output3" style="display: none; position: fixed; top: 0px; left: 0px; cursor: pointer; opacity: 0.9; z-index: 10000; transform: translateZ(100px);"></div>
+		        </div>
+			</div>
+			<!-- 抓拍LIST -->
+			<div class="pic-list-box">
+				<div class="pic-list-return-box" id="list-some-demo">
+					<div class="return-title">
+						<img src="img/title-1.png">
+					</div>
+					<div class="list-title">
+						<p>抓拍照片</p>
+						<p>比对时间</p>
+						<p>比对地点</p>
+					</div>
+				    <div class="list-info"
+					      v-for="(item, index) in items"
+					      v-bind:key="item.identity_id">
+						<div class="return-img">
+							<img class="person-pic" v-bind:src="gidentity_img(index)" />
+						</div>
+<!-- 			            <p>{{ item.identity_name != ''? item.identity_name: item.identity_id }}</p> -->
+			            <p>{{ new Date(item.time).Format("hh:mm:ss") }}</p>
+						<p>设备{{parseInt(item.camera_name) + 1}}</p>
+			        </div>
+				</div>
+				<div class="pic-list-stranger-box" id="list-stranger-demo">
+					<div class="return-title">
+						<img src="img/title-2.png">
+					</div>
+					<div class="list-title">
+						<p>抓拍照片</p>
+						<p>比对时间</p>
+						<p>比对地点</p>
+					</div>
+				    <div class="list-info"
+					      v-for="(item, index) in items"
+					      v-bind:key="item.time">
+						<div class="return-img">
+<!-- 							<img class="person-pic" v-bind:src="item.identity_img" /> -->
+							<img class="person-pic" v-bind:src="item.bmp_base64" />
+						</div>
+<!-- 			            <p>{{ item.identity_name != ''? item.identity_name: item.identity_id }}</p> -->
+			            <p>{{ new Date(item.time).Format("hh:mm:ss") }}</p>
+						<p>设备{{parseInt(item.camera_name) + 1}}</p>
+			        </div>
+				</div>
+			</div>
+			<!-- 实时抓拍 -->
+			<div class="real-time-box" id="list-all-demo">
+				<div class="return-title">
+					<img src="img/title-3.png">
+				</div>
+			    <div v-bind:class="calculate(index)"
+				      v-for="(item, index) in items"
+				      v-bind:key="item.time">
+				      <div class="return-img">
+							<img class="person-pic" v-bind:src="item.bmp_base64" />
+					  </div>
+		            <p>{{ getGender(index) }}-{{ getAge(index) }}</p>
+					<p>{{ new Date(item.time).Format("hh:mm:ss") }}</p>
+					<p>设备{{parseInt(item.camera_name) + 1}}</p>
+		        </div>
+			</div>
+		</div>
+	</body>
+</html>

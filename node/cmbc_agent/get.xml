@@ -1,0 +1,25 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:int="http://interfaces.bios.eyecool.cn">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <int:putIdentifyData>
+            <int:in0><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<req>
+    <head>
+        <req-time>20190312140558194</req-time>
+        <req-seq-no>20190312140558195</req-seq-no>
+    </head>
+    <agent-info>
+        <trans-type>1</trans-type>
+    </agent-info>
+    <ws-info>
+        <syn-time>20190312093909240</syn-time>
+        <syn-count>2484</syn-count>
+    </ws-info>
+    <cust-info>
+        <cust-fea-id>同步失败的特征id</cust-fea-id>
+        <cust-fea-id>同步失败的特征id</cust-fea-id>
+    </cust-info>
+</req>]]></int:in0>
+        </int:putIdentifyData>
+    </soapenv:Body>
+</soapenv:Envelope>

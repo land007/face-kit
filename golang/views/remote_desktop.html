@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" href="{{.rootPath}}/css/remote_desktop.css">
+        <script src="{{.rootPath}}/js/jquery.min.js"></script>
+        <script src="{{.rootPath}}/js/jquery.scrollLoading-min.js"></script>
+        <script type="text/javascript">
+        	$(function(){$(".scrollLoading").scrollLoading();});
+        	var oldCid = 'jiayq:e57463be25ec17572b57f5886c924d1a9386c013%2e%6a%70%671';
+        	function get(ip, cid){
+        		var url = 'http://192.168.0.191:8009/eye/rest/library/Test/comparison/P1vN?ip=' + ip + '&cid=' + cid;
+        		console.log(url)
+        		$.get(url, function(data, status) {
+        			console.log(JSON.stringify(data))
+        			if(data.code == '200') {
+            			var feature_id = data.feature_id;
+//             			img_443.src = '{{.rootPath}}/public/uploads/37/37cfcdfabb35addac4987574d4e48f1b212e0d7a.jpg'
+            			img_443.src = '{{.rootPath}}/public/library/Test/' + feature_id.substring(0,2) + '/thumbnail_' + feature_id;
+            			p2_443.innerText = '用户ID：' + data.identity_id;
+            			p3_443.innerText = '用户名：' + data.name;
+            			
+            			if(oldCid == data.identity_id + ':' + data.feature_id) {
+            				alert('验证是当前用户')
+            			} else {
+            				oldCid = data.identity_id + ':' + data.feature_id;
+            			}
+//             		    alert("Data: " + data + "\nStatus: " + status);
+//             		    $("div").html(result);
+        			} else {
+        				if(data.msg == 'Test') {
+        					alert('很抱歉，无法确定使用者');
+        				} else if (data.msg == 'not face') {
+        					alert('没有检测到人脸');
+        				} else {
+            				alert(data.msg);
+        				}
+        			}
+        		});
+        	}
+        </script>
+    </head>
+    <body>
+        <div class="body">
+            <div id="div_443" style="color:#66ff99;" class="div1">
+                <p id="p1_443">远程桌面（No.001）</p>
+                <p id="p1_443">IP地址：192.168.0.45</p>
+                <a href="https://img30.360buyimg.com/vip/jfs/t13204/190/2652313542/51436/75ae1cb1/5a461b86N360da920.jpg?pin=4T8xNjgFf4Rf9V9W8PoAYt4Q8V47NSbP" target="_blank">
+                    <img id="img_443" height="100px" src="{{.rootPath}}/image/pixel.gif" data-url="{{.rootPath}}/image/http___img30.360buyimg.com_vip_jfs_t13204_190_2652313542_51436_75ae1cb1_5a461b86N360da920.jpg" class="scrollLoading">
+                </a>
+                <div class="ldiv1">
+                    <button onclick="javascript: get(&apos;192.168.0.45&apos;,&apos;jiayq:e57463be25ec17572b57f5886c924d1a9386c013%2e%6a%70%67&apos;);void(0);">验证</button>
+                </div>
+                <p id="p2_443">用户ID：zhangsan</p>
+                <p id="p3_443">用户名：张三</p>
+            </div>
+        </div>
+    </body>
+</html>

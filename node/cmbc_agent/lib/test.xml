@@ -1,0 +1,31 @@
+<res>
+  <head>
+    <res-code>响应码</res-code>
+    <res-msg>响应信息</res-msg>
+    <res-time>响应时间</res-time>
+    <req-seq-no>请求流水号</req-seq-no>
+    <res-seq-no>后台流水号</res-seq-no>
+  </head>
+  <res-data>
+     <fea-datas>
+      <fea-data>
+         <cust-fea-id>特征ID</cust-fea-id>
+         <nick-name>昵称</nick-name>
+         <feature>特征数据</feature>
+         <group-id>特征组ID</group-id>
+         <update-time>更新时间</update-time>
+         <enable-date>记录有效日期</enable-date>
+     </fea-data>
+      <fea-data>
+         <cust-fea-id>特征ID</cust-fea-id>
+         <nick-name>昵称</nick-name>
+         <feature>特征数据</feature>
+         <group-id>特征组ID</group-id>
+         <update-time>更新时间</update-time>
+         <enable-date>记录有效日期</enable-date>
+     </fea-data>
+     </fea-datas>
+    <unsyn-count>未同步数据量</unsyn-count>
+    <is-init-data>初始化标记</is-init-data>
+  </res-data>
+</res>

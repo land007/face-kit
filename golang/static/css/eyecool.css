@@ -1,0 +1,164 @@
+body {
+/*     margin: 80px; */
+    margin: 6%;
+    text-align: center;
+    letter-spacing: 2px;
+}
+
+a:link {
+    color: #000000;
+    text-decoration: none
+}
+
+a:visited {
+    color: #000000;
+    /* text-decoration: none */
+}
+
+a:hover {
+    color: #ff7f24;
+    text-decoration: underline;
+}
+
+a:active {
+    color: #ff7f24;
+    text-decoration: underline;
+}
+
+form {
+    text-align: left;
+}
+
+.lga {
+    margin: 0px 10px 50px 10px;
+}
+
+.lga img {
+    height: 130px;
+    /* display: none; */
+}
+
+.div1 {
+    /* width: 100px; */
+    position: relative;
+    float: left;
+    padding: 10px 30px 0px 30px;
+    margin: 1px;
+    border: 1px;
+    /* white-space: nowrap; */
+    overflow: hidden;
+    text-align: center;
+}
+
+.scrollLoading {
+    background-color: white;
+    padding: 3px;
+    border: 1px;
+    height: 100px;
+    box-shadow: 7px 7px 30px #888888;
+}
+
+.scrollLoading2 {
+    background-color: white;
+    padding: 3px;
+    border: 1px;
+    box-shadow: 7px 7px 30px #888888;
+}
+
+.div1 .p1 {
+    max-width: 75px;
+    float: left;
+    overflow: hidden;
+    /* text-overflow: ellipsis; */
+    font-weight: bold;
+    color: #ff7f24;
+}
+
+.div1 .p2 {
+    width: 20px;
+    float: left;
+    overflow: hidden;
+    font-weight: bold;
+    color: #ff7f24;
+}
+
+.dz-msg .p1 {
+    max-width: 75px;
+    float: left;
+    overflow: hidden;
+    /* text-overflow: ellipsis; */
+    font-weight: bold;
+    color: #ff7f24;
+}
+
+.dz-msg .p2 {
+    width: 20px;
+    float: left;
+    overflow: hidden;
+    font-weight: bold;
+    color: #ff7f24;
+}
+
+.dropzone .dz-preview .dz-image {
+    border-radius: 5px;
+    width: 100%;
+    /* box-shadow: 10px 10px 5px #888888; */
+    box-shadow: 7px 7px 30px #888888;
+}
+
+.dropzone .dz-preview .dz-image img {
+    height: 120px;
+    background-color: white;
+    padding: 3px;
+    border: 1px;
+}
+
+.dz-preview .dz-processing .dz-image-preview .dz-success .dz-complete {
+    border-radius: 5px;
+    width: 100%;
+    box-shadow: 10px 10px 5px #888888;
+}
+
+.dz-preview .dz-processing .dz-image-preview .dz-success .dz-complete img {
+    height: 120px;
+    background-color: white;
+    padding: 3px;
+    border: 1px;
+}
+
+.dropzone .dz-preview .dz-remove {
+    padding-top: 10px;
+}
+
+.dz-filename span {
+    line-height: 25px;
+}
+
+.dropzone .dz-preview .dz-details .dz-size {
+    margin-bottom: 8px;
+}
+
+.dropzone .dz-preview .dz-details {
+    padding: 1.5em 1em;
+}
+
+.dz-msg {
+    padding-top: 18px;
+    text-align: center;
+    font-weight: bold;
+    color: #ff7f24;
+}
+
+.dleft {
+    width: 50%;
+    float: left;
+    text-align: left;
+}
+
+.dright {
+    width: 50%;
+    float: left;
+    text-align: right;
+}
+
+

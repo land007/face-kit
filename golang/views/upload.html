@@ -1,0 +1,75 @@
+<!-- /views/upload.html -->
+<html>
+<head>
+    <title>图库管理</title>
+    <meta name="viewport" content="width=device-width,initial-scale=0.6, minimum-scale=0.5, maximum-scale=0.7, user-scalable=no"/>
+    <link rel="shortcut icon" href="{{.rootPath}}/favicon.ico" />
+    <link type="text/css" href="{{.rootPath}}/css/dropzone.css" rel="stylesheet" />
+    <script type="text/javascript" src="{{.rootPath}}/js/dropzone.js"></script>
+    <script type="text/javascript" src="{{.rootPath}}/js/jquery.min.js"></script>
+    <script type="text/javascript" src="{{.rootPath}}/js/jquery.scrollLoading-min.js"></script>
+    <script type="text/javascript" src="{{.rootPath}}/js/easy-editable-text.js"></script>
+    <script type="text/javascript" src="{{.rootPath}}/js/vue.js"></script>
+    <script type="text/javascript" src="{{.rootPath}}/js/exif.js"></script>
+    <script type="text/javascript" src="{{.rootPath}}/js/image.js"></script>
+    <script type="text/javascript">
+    	var rootPath = '{{.rootPath}}';
+    	var lid = '{{.lid}}';
+    	var level = '{{.level}}';
+    </script>
+    <link rel="stylesheet" href="{{.rootPath}}/css/eyecool.css">
+    <link rel="stylesheet" href="{{.rootPath}}/css/text.css">
+    <style>
+	    .add-fixed{
+	        position: fixed;
+	        top: 0;
+	    	z-index: 99;
+		    background: #f9f5f5;
+		    width: 87%;
+	    }
+	</style>
+</head>
+<body>
+    <div id="app" class="lga">
+        <h1 v-if="level == 'release'" >${ lid }图库管理</h1>
+        <h1 v-else>${ lid }图库管理（${ level }版）</h1>
+        <div id="bar">
+	        <div class="dleft">
+	            <span>选择图库：</span>
+	            <select v-model="lid" v-on:change="onChange">
+	                <option v-for="option in options" v-bind:value="option.value">
+	                    ${option.text}
+	                </option>
+	            </select>
+	            <!-- <span>Selected：${ lid }</span> -->
+	        	<a href="javascript: add();void(0);">添加</a>
+	        	<a href="javascript: del();void(0);">删除</a>
+	        </div>
+	        <div class="dright">
+	            <a href="javascript: resetselect();void(0);" style="display: none;" id="resetselect">批量重置</a>
+	            <a href="javascript: delselect();void(0);" style="display: none;" id="delselect">批量删除</a>
+	        	<a href="javascript: clear();void(0);">清空</a>
+	            <a :href="url">去以图搜图</a>
+	        </div>
+        </div>
+    </div>
+    <!-- 3 -->
+    {{if .lid}}
+    <form action="{{.rootPath}}/rest/library/{{.lid}}/uploads" method="POST" class="dropzone" id="my-dropzone">
+        <div class="fallback">
+            <input name="file" type="file" multiple />
+            <input type="submit" value="Upload" />
+        </div>
+    </form>
+    {{else}}
+    <form action="{{.rootPath}}/rest/uploads" method="POST" class="dropzone" id="my-dropzone">
+        <div class="fallback">
+            <input name="file" type="file" multiple />
+            <input type="submit" value="Upload" />
+        </div>
+    </form>
+    {{end}}
+    <script type="text/javascript" src="{{.rootPath}}/js/upload.js"></script>
+</body>
+
+</html>

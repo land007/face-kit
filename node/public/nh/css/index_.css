@@ -1,0 +1,494 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    margin: 0px;
+    padding: 0px;
+    font-family: Microsoft YaHei;
+}
+
+div {
+    margin: 0px;
+    padding: 0px;
+}
+
+.video-canvas {
+}
+
+.td {
+/* 	position: relative; */
+/* 	position: absolute;  */
+/* 	top: 50%;  */
+/* 	left: 50%;  */
+/* 	transform: translate3d(-50%,-50%,0); */
+/* 	background: linear-gradient(135deg, transparent 15px, #58a 0) top left, linear-gradient(-135deg, transparent 15px, #655 0) top right, linear-gradient(-45deg, transparent 15px, #58a 0) bottom right, linear-gradient(45deg, transparent 15px, #655 0) bottom left;著作权归作者所有。 */
+/* 	top: 50%; left: 50%;  */
+/* 	transform: translate3d(-50%,-50%,0); */
+/* 	overflow: hidden; */
+}
+
+#canvas {
+	display: 'block';
+	width: '100%';
+}
+
+.kuang {
+/* 	position: 'absolute'; */
+	transform: translateZ(1px);
+	z-index: 2;
+/* 	color: 'white'; */
+/* 	border: '2px solid #FFFF00'; */
+}
+
+.bg {
+    background-image: url("../img/verticalbkground.png");
+    -webkit-background-size: 100%;
+    background-size: 100%;
+}
+
+.page-top {
+    width: 620px;
+    height: 108px;
+	/*     font-size: 40px; */
+	/* jiayq */
+	font-size: 48px;
+	/*     font-weight: 600; */
+    font-weight: 400;
+    line-height: 84px;
+	/*     color: #00c6ff; */
+	/* jiayq */
+    color: #5cc4f9;
+    text-align: center;
+	/* jiayq */
+	/*     position: absolute; */
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    margin: 0px auto;
+    background-image: url("../img/header.png");
+    -webkit-background-size: 100% 100%;
+    background-size: 100% 100%;
+    z-index: 200;
+}
+
+.page-bottom {
+    width: 100%;
+    height: 140px;
+    /*padding: 0px 50px;*/
+    box-sizing: border-box;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    z-index: 200;
+}
+
+.page-bottom > div {
+    float: left;
+}
+
+.page-bottom .count-box {
+    /*float: left;*/
+    width: 372px;
+    margin-left: 50px;
+    padding-top: 40px;
+}
+
+.page-bottom .count-text {
+    font-size: 34px;
+    color: #fff;
+    vertical-align: middle;
+}
+
+.page-bottom .time-box {
+    width: 202px;
+    height: 100%;
+    padding-top: 40px;
+    background-image: url("../img/timebk.png");
+    background-size: 100%;
+    text-align: center;
+}
+
+.page-bottom .time {
+    font-size: 22px;
+    color: #fff;
+}
+
+.page-bottom .count-img {
+    width: 70px;
+    padding-right: 20px;
+    vertical-align: middle;
+}
+
+.sign-bg {
+    width: 100%;
+    height: 100%;
+    background-image: url("../img/verticalbkhole_.png");
+    -webkit-background-size: 100%;
+    background-size: 100%;
+}
+
+.sign-video {
+/*     padding-top: 134px; */
+/*     padding-left: 50px; */
+/* 	jiayq */
+    padding-top: 37px;
+    padding-left: 0px;
+}
+
+.sign-video img {
+/* 	jiayq */
+/*     width: 977px; */
+}
+
+.meet-content {
+    width: 100%;
+    height: 166px;
+    padding-left: 50px;
+    padding-top: 10px;
+    margin-top: 30px;
+    background-image: url("../img/meetinginfos.png");
+    background-size: 100% auto;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.meet-content-box {
+    margin: 12px 0px;
+}
+
+.meet-content img {
+    width: 56px;
+    vertical-align: middle;
+    margin-right: 30px;
+}
+
+.meet-content .meet-content_text {
+    font-size: 30px;
+    color: #fff;
+    vertical-align: middle;
+}
+
+.meet-content_text.content-name {
+    padding-right: 10px;
+}
+
+.person-list {
+    padding-left: 50px;
+    padding-top: 23px;
+    overflow: hidden;
+}
+
+.list-child {
+    width: 510px;
+/*     height: 150px; */
+/* 	jiayq */
+    height: 146px;
+    float: left;
+    padding-right: 70px;
+    padding-top: 20px;
+    margin-bottom: 38px;
+    background-image: url(../img/signpersonshow.png);
+    background-size: auto 100%;
+    position: relative;
+    box-sizing: border-box;
+    margin-top: 27px;
+}
+
+.list-child:nth-child(even) {
+    margin-left: 10px;
+/*     jiayq */
+/*     margin-top: 2px; */
+}
+
+.list-child .list-text {
+    /*width: 100%;*/
+    margin-left: 75px;
+    text-align: center;
+    font-size: 26px;
+    color: #fff;
+    margin-top: 10px;
+}
+
+.list-child .person-name {
+    font-size: 32px;
+}
+
+.list-child .person-pic {
+    width: 150px;
+    height: 150px;
+    position: absolute;
+    top: -3px;
+    left: 0px;
+    -webkit-border-radius: 75px;
+    -moz-border-radius: 75px;
+    border-radius: 75px;
+    z-index: 1;
+}
+
+.list-child .person-shade {
+    width: 150px;
+    position: absolute;
+    top: -44px;
+    left: 0px;
+    z-index: 3;
+}
+
+/*弹窗*/
+.modal-box {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background: #000;
+    opacity: 0.6;
+    z-index: 19;
+}
+
+.modal {
+/*     width: 510px; */
+/*     height: 620px; */
+	/* 	jiayq */
+    width: 555px;
+    height: 683px;
+    text-align: center;
+    position: absolute;
+/*     top: 863px; */
+/* 	jiayq */
+    top: 196px;
+    box-shadow: 7px 7px 30px #0a0a0a;
+    
+    left: 0px;
+    right: 0px;
+    margin: 0px auto;
+    z-index: 20;
+    background-image: url("../img/signdlgbkg.png");
+    background-size: 100% 100%;
+}
+
+.modal-top {
+    padding: 30px;
+/*     margin-top: 37px; */
+/* 	jiayq */
+    margin-top: 79px;
+    position: relative;
+    text-align: center;
+}
+
+.modal-top .person-head {
+    width: 216px;
+    height: 216px;
+    border-radius: 130px;
+}
+
+.modal-top .person-shade {
+    width: 250px;
+    position: absolute;
+    top: 13px;
+    left: 0px;
+    right: 0px;
+    margin: 0 auto;
+}
+
+.modal .modal-center {
+    margin-top: 22px;
+}
+
+.modal-bottom .modal-text1 {
+    font-size: 30px;
+    margin-top: 16px;
+    color: #fff;
+}
+
+.modal-bottom .modal-text2 {
+    font-size: 40px;
+    margin-top: 8px;
+    color: #fff;
+}
+
+/*人员列表页面*/
+.table-box {
+    width: 100%;
+    height: 100%;
+    padding: 40px 50px 0px;
+/*     padding: 123px 50px 0px; */
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 120;
+    box-sizing: border-box;
+
+}
+
+.table-box .head {
+    height: 36px;
+    font-size: 24px;
+    color: #fff;
+    margin-bottom: 12px;
+    text-align: center;
+    position: relative;
+}
+
+.table-box .head .goback {
+    width: 57px;
+    position: absolute;
+    left: 0px;
+    top: -16px;
+}
+
+.table-box .table {
+    padding: 36px 22px;
+    background-color: #002454;
+}
+
+.table-box table {
+    width: 100%;
+    color: #fff;
+    font-size: 32px;
+    text-align: center;
+    border-spacing: 0;
+    border-collapse: collapse;
+    border: 1px solid #0050be;
+}
+
+.table-box table tr td {
+    border-bottom: 1px solid #0050be;
+    padding: 10px;
+}
+
+.table-box table thead tr td {
+    border-bottom: 1px solid #0050be;
+    padding: 25px 0px;
+
+}
+
+.table-box table tbody > tr:nth-of-type(odd) {
+    background-color: #001e46;
+}
+
+.table-box table .person-head {
+    width: 80px;
+    height: 80px;
+    border-radius: 80px;
+}
+
+.content-shade {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    background-image: url("../img/1.jpg");
+    z-index: 300;
+
+}
+
+.page-bottom .time-box,
+.modal,
+.page-bottom .count-box,
+.table-box .goback,
+.page-top,
+.content-shade {
+    cursor: pointer;
+}
+
+/*横版界面样式*/
+.sign-bg-cross {
+    background-image: url("../img/1920.png");
+}
+
+.sign-content-left {
+    float: left;
+}
+
+.sign-content-right {
+    float: right;
+    width: 50%;
+    padding-top: 168px;
+    padding-left: 4px;
+}
+
+.sign-content-left .sign-video {
+    padding-top: 152px;
+    padding-left: 36px;
+}
+
+.sign-content-left .sign-video img {
+    width: 896px;
+}
+.sign-content-left .meet-content {
+    height: auto;
+    padding-bottom: 10px;
+}
+.sign-content-left .meet-content img{
+    width: 82px;
+}
+.sign-content-left  .meet-content .meet-content_text{
+    font-size: 40px;
+}
+.sign-content-right .person-list{
+    padding-left: 27px;
+}
+.sign-content-right .list-child {
+    width: 450px;
+    margin-bottom: 24px;
+    padding-right: 0px;
+}
+
+.sign-content-right .list-child:nth-child(even) {
+    margin-left: 30px;
+    /*padding-right: 46px;*/
+    /*width: 430px;*/
+}
+
+.page-bottom-cross {
+    width: auto;
+    right: 40px;
+    left: auto;
+    bottom: 38px;
+    /*z-index: 115;*/
+}
+
+.page-bottom-cross .count-box {
+    width: 390px;
+    margin-left: 80px;
+}
+.page-bottom-cross .count-img{
+    width: 82px;
+}
+.page-bottom-cross .count-text{
+    font-size: 40px;
+}
+.time-box-cross {
+    position: absolute;
+    left: 56px;
+    color: #fff;
+    font-size: 40px;
+    top: 94px;
+    cursor:pointer ;
+    z-index: 115;
+}
+.time-box-cross img{
+    vertical-align: middle;
+}
+.time-box-cross .time{
+    vertical-align: middle;
+}
+.modal-cross {
+    top: 200px;
+    right: 200px;
+    left: auto;
+    margin: 0;
+}
+.table-box-cross{
+    background-image: url("../img/bkground1080.png");
+}
+.table-box-cross .table{
+    padding: 16px 28px;
+    max-height: 656px;
+    overflow: hidden;
+}
+.content-shade-cross{
+    background-image: url("../img/nomeeting.jpg");
+}

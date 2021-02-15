@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=0.75 minimum-scale=0.6, maximum-scale=0.9, user-scalable=no"/>
+    <title>EYE</title>
+	<script type="text/javascript" src="../jsmpeg-master/jsmpeg.min.js"></script>
+<!-- 	<script type="text/javascript" src="../jsmpeg-master/jsmpeg.pipe.js"></script> -->
+<!-- 	<script type="text/javascript" src="/socket.io/socket.io.js"></script> -->
+	<script type="text/javascript" src="../js/socket.io.js"></script>
+<!-- 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.1.js"></script> -->
+	<script type="text/javascript" src="../js/jquery-1.11.1.js"></script>
+<!-- 	<script type="text/javascript" src="//naver.github.io/egjs-jquery-transform/release/latest/dist/transform.js"></script> -->
+	<script type="text/javascript" src="../js/transform.js"></script>
+	<script type="text/javascript" src="../js/vue.js"></script>
+	<script type="text/javascript" src="../js/lodash.js"></script>
+	<script type="text/javascript" src="../js/stats.js"></script>
+	<script type="text/javascript" src="../js/face.js"></script>
+	<script type="text/javascript">
+		var kuang_border_style = '2px solid #FFFF00';
+		var some_max = 4;
+		var stranger_max = 4;
+		var realtime_max = 7;
+		var complete_max = 13;
+		var stats_left = '61px';
+		var stats_top = '12px';
+	</script>
+    <link rel="stylesheet" href="css/index_.css">
+<!--     <link rel="stylesheet" href="bulma.css"> -->
+<!--     <link rel="stylesheet" href="carousel.css"> -->
+</head>
+<body class="">
+<div class="page-bottom" style="left: 60px; bottom: 48px;">
+	<div style="width:1430px; height: 200px; color: #5cc4f9; font-size: 60px; font-weight: 400; line-height: 196px; text-align: center; display: none;" class="marquee">
+		2018年11月29日
+	</div>
+<!--     <div class="count-box">  晴 10℃-->
+<!--         <img class="count-img" src="img/invited.png"/> -->
+<!--         <span class="count-text">已邀约</span><span class="count-text count_val">0</span><span class="count-text">人</span> -->
+<!--     </div> -->
+<!--     <div class="time-box"> -->
+<!--         <div class="time-img"> -->
+<!--             <img src="img/clock.png"/> -->
+<!--         </div> -->
+<!--         <div class="time"> -->
+<!--             12:45 -->
+<!--         </div> -->
+<!--     </div> -->
+<!--     <div class="count-box"> -->
+<!--         <img class="count-img" src="img/signed.png"/> -->
+<!--         <span class="count-text">已签到</span><span class="count-text count_val">0</span><span class="count-text">人</span> -->
+<!--     </div> -->
+</div>
+<div class="sign-bg">
+    <div style="height: 108px" onclick="launchFullscreen(document.documentElement);">
+		<div class="page-top">
+		    <img alt="" src="img/2019.png">
+		</div>
+	</div>
+    <div class="sign-video"  style="height: 803px;width: 1430px; float: left;">
+<!--     	<div style="width: 895px; height: 631px; left: 41px; position: relative; overflow: hidden;"> -->
+<!-- 	        <div id="td" style="display: inline-block; position: relative; top: 54px; left: -63px"> -->
+<!-- 				<canvas id="canvas"></canvas> -->
+<!-- 	        </div> -->
+<!--         </div> -->
+    	<div style="position: absolute; transform: rotateZ(45deg); overflow: hidden; top: -127px; width: 1341px; height: 1341px; left: 80px;">
+	    	<div style="width: 1280px; height: 720px; left: 31px; position: relative; overflow: hidden; transform: rotateZ(-45deg); top: 314px;">
+<!-- 		        <div id="td" style="display: inline-block; position: relative; left: -138px"> -->
+<!-- 				<div id="td" style="position: absolute; top: 50%; left: 50%; margin-top: -288px; margin-left: -512px;"> -->
+<!-- 				<div id="td" style="position: absolute; top: 50%; left: 50%; margin-top: -334px; margin-left: -594px;"> -->
+				<div id="td">
+					<canvas id="canvas"></canvas>
+					<div id="Stats-output" style="display: none; position: fixed; top: 0px; left: 0px; cursor: pointer; opacity: 0.9; z-index: 10000; transform: translateZ(100px);"></div>
+<!-- 					<div class="kuang" style="transform: translateZ(100px); z-index: 2; position: absolute; left: 534px; top: 349px; width: 106px; height: 105px; color: white; border: 1px solid red;"></div> -->
+		        </div>
+	        </div>
+        </div>
+		<div style="position: absolute; left: 66px; top: 144px;">
+<!--         	<img src="img/videozone_.png" style="width: 977px;"/> -->
+        	<img src="img/videozone_.png"/>
+		</div>
+	    <div style="    position: absolute; left: 122px; top: 70px;">
+	    	<img alt="" src="./img/logo0_.png">
+	    </div>
+    </div>
+<!--     <div class="meet-content" style="display: none;"> -->
+<!--         <div class="meet-content-box"> -->
+<!--             <img class="" src="img/agendatitle_bk.png"/> -->
+<!--             <span class="meet-content_text content-name">会议主题:</span> -->
+<!--             <span class="meet-content_text content-val"></span> -->
+<!--         </div> -->
+<!--         <div class="meet-content-box"> -->
+<!--             <img class="" src="img/signtime_bk.png"/> -->
+<!--             <span class="meet-content_text content-name">签到时间:</span> -->
+<!--             <span class="meet-content_text content-val"></span> -->
+<!--         </div> -->
+<!--     </div> -->
+    <div class="person-list" style="float: left; width: 440px;" id="list-some-demo" >
+<!-- 		<button v-on:click="shuffle">Shuffle</button> -->
+<!-- 		<button v-on:click="add">Add</button> -->
+<!-- 		<button v-on:click="remove">Remove</button> -->
+        <div class="list-child"
+		      v-for="(item, index) in items"
+		      v-bind:key="item.identity_id"
+		      class="list-complete-item">
+            <img class="person-pic" v-bind:src="item.identity_img" />
+            <div class="person-name list-text">{{ item.identity_name != ''? item.identity_name: getOne(item.identity_id) }}</div>
+            <div class="sign-time list-text">{{ new Date(item.time).Format("hh:mm:ss") }}</div>
+            <img class="person-shade" src="img/listviewpersonhead.png"/>
+        </div>
+    </div>
+</div>
+<div class="modal-box" style="display: none;">
+</div>
+<div class="modal" style="display: none;" id="rectBox">
+	<div style="position: absolute; width: 100%;">
+        <div style="float:left; margin-left: 75px;"><img class="person-left" src="img/zhu.png"/></div>
+        <div style="float:right; margin-right: 69px;"><img class="person-right" src="img/zhu.png"/></div>
+    </div>
+    <div class="modal-top">
+        <img class="person-head" src="person-img/test (3).jpg"/>
+        <img class="person-shade" src="img/personhead.png"/>
+    </div>
+    <div class="modal-center">
+        <img src="img/sign.png"/>
+    </div>
+    <div class="modal-bottom">
+        <div class="modal-text1 name">闫应强</div>
+        <div class="modal-text2">欢迎莅临</div>
+    </div>
+</div>
+<div class="table-box bg" style="display: none;">
+    <div class="head">
+        <img class="goback" src="img/back.png">
+    </div>
+    <div class="table" id="list-complete-demo">
+        <table class="">
+            <thead>
+            <tr>
+                <td>序号</td>
+                <td>头像</td>
+                <td>姓名</td>
+<!--                 <td>ID</td> -->
+                <td>签到时间</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr
+		      v-for="(item, index) in items"
+		      v-bind:key="item.identity_id"
+		      class="list-complete-item">
+                <td>{{index+1}}</td>
+                <td><img class="person-head" v-bind:src="item.identity_img"></td>
+                <td>{{ item.identity_name != ''? item.identity_name: item.identity_id }}</td>
+<!--                 <td>{{ item.identity_id }}</td> -->
+                <td>{{ new Date(item.time).Format("yyyy-MM-dd hh:mm") }}</td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="content-shade" style="display: none"></div>
+<script type="text/javascript">
+
+</script>
+</body>
+</html>

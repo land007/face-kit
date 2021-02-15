@@ -1,0 +1,21 @@
+{
+	"code": "0000",
+	"msg": "操作成功",
+	"redirect": null,
+	"data": [
+		{
+			"equipmentIp": "192.168.0.96",
+			"equipmentName": "摄像机A",
+			"equipmentType": "1",
+			"locationName": "大厅",
+			"location": "1"
+		},
+		{
+			"equipmentIp": "192.168.0.96",
+			"equipmentName": "摄像机B",
+			"equipmentType": "1",
+			"locationName": "大厅",
+			"location": "1"
+		}
+	]
+}

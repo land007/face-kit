@@ -1,0 +1,456 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "eyecool.face";
+option java_outer_classname = "FaceProtos";
+option objc_class_prefix = "ECFACE";
+
+package face_service;
+
+// Interface exported by the face match server.
+service FaceMatchService {
+  // A simple RPC.
+  //
+  // Obtains the top N matched face ID for a given face feature.
+  //
+  // A list of identity ID with matching score is returned. 1:N match while
+  // N is pre-stored in face match server.
+  rpc GetIdentityID(FaceMatchRequest) returns (MatchedIdentities) {}
+
+  // Compare the closeness of two features. 1:1 match.
+  rpc GetMatchScore(FeatureMatchScoreRequest) returns (FeatureMatchScoreResult) {}
+
+  // A server-to-client streaming RPC.
+  //
+  // for a given face feature library, obtains its stored face features
+  // and corresponding identity ID. Results are streamed rather than
+  // returned at once due to a huge number of face features.
+  rpc ListFaceFeatures(FeatureLibraryRequest) returns (stream FeatureUpdate) {}
+
+  // Count the number of features in memory for a given face feature library.
+  rpc CountFaceFeatures(FeatureLibraryRequest) returns (Count) {}
+
+  // List all face feature libraries
+  rpc GetFeatureLibraries(EmptyRequest) returns (FeatureLibraries) {}
+  
+  // A client-to-server streaming RPC.
+  //
+  // Accepts a stream of face features to update the currently stored face
+  // features. If the same identity id and feature id exist in the system,
+  // then it would update the associated face feature with the new one.
+  // Otherwise, it will append it as a new face feature in the server.
+  rpc UpdateFaceFeatures(stream FeatureUpdate)
+    returns (FeatureLibraryUpdates) {}
+
+  // An identity id may have multiple face features for face matching.
+  // This function will delete all associated face features for a given
+  // feature library. 
+  rpc DeleteFaceFeatures(IdentityRequest) returns (FeatureLibraryUpdates) {}
+
+  // Delete features which are specified by library + identity_id + feature_id_ary
+  rpc DeleteFeatures(DelFeaturesRequest) returns (FeatureLibraryUpdates) {}
+
+  // This function will delete all face features of the specified feature
+  // library from the face match server. 
+  rpc DeleteFaceFeatureLibrary(FeatureLibraryRequest)
+    returns (FeatureLibraryUpdates) {}
+}
+
+// Interface exported by the face server for face detection, anti-spoof check,
+// and face feature extraction
+service FaceService {
+  // Face related image process. This one request can performance a combination
+  // of three actions: face detection, anti-spoof check, and face feature
+  // extraction
+  rpc FaceProcess(FaceRequest) returns (FaceReply) {}
+}
+
+// Receive face identity results.
+service FaceIdentityService {
+  rpc SendFaceIdentity(Faces) returns (Empty) {}
+}
+
+message Empty {
+}
+
+message EmptyRequest {
+  // business information of client requestor
+  Requestor requestor = 100;
+}
+
+// Face feature extracted by a face recognition learning model. 
+message FaceFeature {
+  // Face feature representation.
+  bytes value = 1;
+
+  // Face model version.
+  string version = 2;
+
+  // Expire time of the feature, represented as the number of milliseconds since
+  // the epoch. If the system time is larger than the expire time, then this
+  // feature becomes invalid.
+  int64 expire_time = 3;
+
+  // The update time of the feature.
+  int64 update_time = 4;
+}
+
+// ImageParam is a collection of parameters of an image
+message ImageParam {
+  int32 width = 1;
+  int32 height = 2;
+  enum Channel {
+    RGB = 0;
+    GRAY = 1;
+  }
+  Channel channel = 3;
+}
+
+// Image contains picture data and parameters of the image
+message Image {
+  // Content of image, binary format.
+  bytes image_bytes = 1;
+
+  ImageParam image_param = 2;
+
+  // Image_source is the ID/name of the camera that takes this image.
+  string image_source = 3;
+
+  // Image sequence
+  int64 image_sequence = 4;
+}
+
+// CroppingBox defines the coordinates of the top left corner and the width
+// and height of a cropping box in an image.
+message CroppingBox {
+  // The coordinate of the top left corner
+  int32 x = 1;
+  int32 y = 2;
+
+  // The width and length of the cropping box
+  int32 width = 3;
+  int32 height = 4;
+
+  // The sequence number of an image, not required to fill. Used in
+  // video stream to associate multiple face cropping boxes in the
+  // same image together.
+  int64 image_sequence = 5;
+  
+  // The width and length of the frame 
+  int32 frame_width=6;
+  int32 frame_height=7;
+}
+
+// FaceParam is a collection of parameters of a single face found in a
+// picture.
+message FaceParam {
+  // Cropping box enclose only the skin part of the face.
+  // The coordinates of the box are in the original image's scale.
+  CroppingBox cropping_box = 1;
+
+  message Landmark {
+    enum Type {
+      LEFT_EYE = 0;
+      RIGHT_EYE = 1;
+      LEFT_OF_LEFT_EYEBROW = 2;
+      RIGHT_OF_LEFT_EYEBROW = 3;
+      LEFT_OF_RIGHT_EYEBROW = 4;
+      RIGHT_OF_RIGHT_EYEBROW = 5;
+      MIDPOINT_BETWEEN_EYES = 6;
+      NOSE_TIP = 7;
+      UPPER_LIP = 8;
+      LOWER_LIP = 9;
+      MOUTH_LEFT = 10;
+      MOUTH_RIGHT = 11;
+      MOUTH_CENTER = 12;
+    }
+    // Those landmark positions may fall outside the bounds of the image
+    // when the face is near the edges of the image.
+    int32 x = 1;  
+    int32 y = 2;  
+
+    // Typically we use 5 key landmark points: LEFT_EYE, RIGHT_EYE, NOSE_TIP,
+    // MOUTH_LEFT, MOUTH_RIGHT
+    Type type = 3;
+
+    // Per landmark location confidence score. The confidence score
+    // should be in range [0.0, 1.0] and high score indicates high confidence.
+    float confidence = 4;
+  }
+  repeated Landmark landmark = 3;
+
+  // Roll angle indicates how much clockwise/anti-clockwise the face is rotated
+  // relative to the image vertical and about the axis perpendicular to the
+  // face. Range [-180,180].
+  float roll_angle = 4;
+
+  // Yaw angle. Indicates how much leftward/rightward the face is pointing
+  // relative to the vertical plane perpendicular to the image. Range
+  // [-180,180].
+  float yaw_angle = 5;
+
+  // Pitch angle. Indicates how much upwards/downwards the face is pointing
+  // relative to the image's horizontal plane. Range [-180,180].
+  float tilt_angle = 6;
+
+  // Detection confidence score is in the range [0,1].
+  float detection_score = 7;
+
+  // This score indicates overall quality of the face and its relative
+  // suitability for using it in face recognition.
+  float face_quality_score = 8;
+
+  // liveness score, between [0, 1], indicates the likelihood of the image being
+  // taken from pictures/monitors/cell phones/masks. low score means more
+  // likely to be a real face. 
+  float liveness_score = 9;
+}
+
+message FaceParams {
+  repeated FaceParam face_param = 1;
+}
+
+// Face contains all information about a captured face: image, the capture time
+// of the image, face feature, detailed face information, and the identities
+// matched 
+message Face {
+  FaceFeature face_feature = 1;
+
+  FaceParam face_param = 2;
+
+  Image image = 3;
+
+  // A list of matched identity id's.
+  MatchedIdentities matched_identities = 4;
+
+  // The time when the corresponding image is received or captured, represented
+  // as the milliseconds from the epoch.
+  int64 image_time_stamp = 5;
+  
+  bool is_stranger = 6;
+}
+
+// A collection of Face
+message Faces {
+  repeated Face face = 1;
+
+  // business information of client requestor
+  Requestor requestor = 100;
+}
+
+// All the information to be passed to the Face Service for face detection,
+// face anti-spoof, and face feature extraction. It contains an image,
+// the locations of face cropping boxes (optional), what actions to perform:
+// face detection, face anti-spoof, and/or face feature extraction.
+message FaceRequest {
+  Image image = 1;
+
+  // If faces are already dected, then we will pass the corresponding
+  // information: the locations of cropping boxes of those detected faces and
+  // the key landmarks.
+  FaceParams face_params = 2;
+
+  // If we should perform face detection. If this is enabled, we will ignore
+  // the information contained in face_params and re-populate that information.
+  bool face_detection = 3;
+
+  // If we should perform anti-spoof detection.
+  bool liveness_detection = 4;
+
+  // If we should perform feature extraction.
+  bool feature_extraction = 5;
+
+  // If both livness_detection and feature_extraction is enabled, if
+  // liveness_score is higher than this threshold, then we will not perform
+  // feature extraction.
+  double liveness_threshold = 6;
+
+  // Minimum face size to be detected
+  int32 face_detection_minimum_size = 7;
+
+  // business information of client requestor
+  Requestor requestor = 100;
+}
+
+// The reply message of the Face Service
+message FaceReply {
+  FaceParams face_params = 1;
+  repeated FaceFeature face_feature = 2;
+}
+
+message FeatureUpdate {
+  // An id of person's identity
+  string identity_id = 1;       
+
+  // The name of the person.
+  string identity_name = 5;
+  
+  // A face feature of the person.
+  FaceFeature face_feature = 2;
+  
+  // A face feature id to differentiate different features extracted
+  // for the same person. It may not be unique across people.
+  string feature_id = 3;  
+
+  // The feature library which this person is associated with. The face
+  // match service uses this information to filter out people's features
+  // to be matched on.
+  FeatureLibrary feature_library = 4;
+
+  // business information of client requestor
+  Requestor requestor = 100;
+}
+
+// FaceMatchOptions allow clients to control the face match operation
+message FaceMatchOptions {
+  // The threshold is used to determine if two features are really the same
+  // person. The value is between 0 to 100.
+  double match_threshold = 1;
+
+  // Used in 1:N matching to determine the number of matches returned.
+  int32 top_n = 2;
+
+  // Tells the face match server which feature library we should use to match
+  // a face feature.
+  FeatureLibrary feature_library = 3;
+
+  // The next two fields split a feature library into a number of pieces,
+  // specified by num_pieces, and match happens only in the piece designated
+  // by piece_sequence. These two are usually used for a huge feature library
+  // and it allows a client to send multiple match calls simultaneously to
+  // the server and each call only matches on a smaller piece of the whole
+  // feature library. The client would decide how to combine the match results
+  // from multiple calls.
+  int32 num_pieces = 4;
+
+  // piece_sequence starts from 0.
+  int32 piece_sequence = 5;
+  
+  bool disable_check_crc = 6;
+}
+
+message FaceMatchRequest {
+  FaceFeature face_feature = 1;
+
+  FaceMatchOptions face_match_options = 2;
+
+  // If identity ID is included, then this is a 1:1 authorization request,
+  // otherwise, it is a 1:N recognition request.
+  string identity_id = 3;
+
+  // business information of client requestor
+  Requestor requestor = 100;
+}
+
+message MatchedIdentity {
+  // The identity id of of the matched person.
+  string identity_id = 1;
+
+  // The name of the matched person.
+  string identity_name = 4;
+
+  // The match score measures the closeness to the matched feature. Its
+  // value is between 0 to 100, with 100 to be the exact match.
+  double match_score = 2;
+
+  // The feature id of the person that is matched to.
+  string feature_id = 3;
+}
+
+// Used for 1:1 match request
+message FeatureMatchScoreRequest {
+  // The first feature to be matched
+  FaceFeature face_feature_1 = 1;
+
+  // The second feature to be matched
+  FaceFeature face_feature_2 = 2;
+
+  // business information of client requestor
+  Requestor requestor = 100;
+
+}
+
+// The match result of 1:1 match
+message FeatureMatchScoreResult {
+  // The match score measures the closeness of two features. Its
+  // value is between 0 to 100, with 100 to be the exact match.
+  double match_score = 1;
+}
+
+message MatchedIdentities {
+  repeated MatchedIdentity matched_identity = 1;
+}
+
+message FeatureLibrary {
+  string library_name = 1;
+}
+
+message FeatureLibraries {
+  repeated FeatureLibrary feature_library = 1;
+}
+
+message FeatureLibraryRequest {
+  FeatureLibrary feature_library = 1;
+
+  // business information of client requestor
+  Requestor requestor = 100;
+}
+
+// FeatureLibraryUpdates return statistics of feature update results.
+message FeatureLibraryUpdates {
+  // The number of features updated (not added) in the match server
+  int32 num_updated = 1;
+
+  // The number of feature added into the match server
+  int32 num_added = 2;
+
+  // The number of features deleted from the match server
+  int32 num_deleted = 3;
+
+  // The number of request records not updated due to various reaons, for
+  // example expired.
+  int32 num_failed = 4;
+  
+  // After update, the total number of features in the match server.
+  int32 num_features = 5;
+
+  // After update, return the latest update time of all features
+  // in the match server, represented as the milliseconds from the epoch.
+  int64 latest_update_time = 6;
+}
+
+// This is a collection of identity id's with associated feature library name.
+message IdentityRequest {
+  repeated string identity_id = 1;
+  FeatureLibrary feature_library = 2;
+
+  // business information of client requestor
+  Requestor requestor = 100;
+
+}        
+
+// 
+message DelFeaturesRequest {
+  repeated string feature_id = 1;
+  string identity_id = 2;
+  FeatureLibrary feature_library = 3;
+
+  // business information of client requestor
+  Requestor requestor = 100;
+
+}        
+
+message Count {
+  int32 count = 1;
+}
+
+// The information of the entity that initiates gRPC requests 
+message Requestor {
+  string company_id = 1;
+  string application_id = 2;
+  string device_id = 3;
+  string access_code = 4;
+  string user_id = 5;
+  string password = 6;
+  string request_sequence = 7;
+}

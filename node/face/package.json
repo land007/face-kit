@@ -1,0 +1,16 @@
+{
+  "name": "face",
+  "version": "1.0.0",
+  "description": "",
+  "main": "face.js",
+  "dependencies": {
+    "bitmap-js": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Jia YiQiu",
+  "license": "ISC"
+}

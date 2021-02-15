@@ -1,0 +1,3 @@
+.div1 {width: 200px; float: left; background-image: url("../image/back.jpg"); padding: 12px; margin: 1px; border: 1px; overflow: hidden;}
+.scrollLoading {background-color: white; padding: 3px; border: 1px;}
+.ldiv1 {width: 70px; float: right;}

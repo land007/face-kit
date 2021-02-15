@@ -43,7 +43,7 @@ RUN sed -i 's/\r$//' /check.sh && \
 	chmod +x /golang_/start.sh && \
 	chmod +x /golang_/stop.sh
 VOLUME ["/public"]
-ENV CompanyName=眼神科技 \
+ENV CompanyName=EYE \
 	OldAlgoVersion=feature \
 	AlgoVersion=1030 \
 	DbDrive=mysql \
@@ -180,7 +180,7 @@ RUN rm -f /node_/main.js && \
 	sed -i "s/^eyecool:x.*/eyecool:x:0:1000::\/home\/eyecool:\/bin\/bash/g" /etc/passwd && \
 	cp -R /home/land007/* /home/eyecool
 ENV ZENITH_URL="" \
-#1,马坡，2安外 ,
+#1,马，2安 ,
 	LOCATION="" \
 #抓拍机专用属性,人员点位，从哪儿进的(北门进入)
 	POSITION="" \
@@ -247,13 +247,14 @@ CMD /check.sh /node; /checkOne.sh /golang; /etc/init.d/ssh start; /node/start.sh
 #无视频
 #docker rm -f face-kit; rm -rf ~/docker/node_kit; rm -rf ~/docker/golang_kit; rm -rf ~/docker/golang-public_kit; docker run --runtime nvidia -it -e "AdminPass=" -e "AlgoVersion=1030" -e "OldAlgoVersion=feature" -v ~/docker/golang_kit:/golang -v ~/docker/golang-public_kit:/public -v ~/docker/node_kit:/node -e "FaceAddress=127.0.0.1:50052" -e "FaceMatchAddress=127.0.0.1:50051" -e "DbHost=" -e "Database=" -e "DbUsername=" -e "DbPassword=" -e "LEVEL=beta" --name face-kit --log-opt max-size=1m --log-opt max-file=1 -p 8019:8080 -p 3201:3101 -p 8899:8899 -p 20119:20022 -e "REMOTE_SNAPSHOT_SERVER=eyecool-cpp-grpc_beta:50050" -e "MATCH_LIBRARY=Test" -p 50063:50053 -e "DOORMONITORS=" -e "WH=1280x720" -e "QUALITY=3" -e "TTS=" -p 5201:5101 -p 6201:6101 -p 7201:7101 -e "REDUCE_FRAME=16" -e "BLOCKSWITCHS=0" -e "VIDEOSWITCHS=0" -e "DbLoad=1" -e "SENDIMG=1" land007/face-kit:latest
 #有视频
-#docker rm -f face-kit; docker run -it --label=com.centurylinklabs.watchtower.enable=true --volumes-from x11-bridge -e DISPLAY=:14 -v /:/host --link eyecool-cpp-grpc_beta:eyecool-cpp-grpc_beta --link mysql:mysql --privileged -e "AdminPass=" -e "AlgoVersion=1030" -e "OldAlgoVersion=feature" -e "GitUser=jiayiqiu" -e "GitPass=jiayq007" -v ~/docker/golang_beta:/golang -v ~/docker/golang-public_beta:/public -v ~/docker/node_beta:/node -v ~/docker/cpp_beta:/cpp -e "FaceAddress=eyecool-cpp-grpc_beta:50052" -e "FaceMatchAddress=eyecool-cpp-grpc_beta:50051" -e "DbHost=mysql" -e "Database=io-grpc_beta" -e "DbUsername=root" -e "DbPassword=ys1234567" -e "LEVEL=beta" --name face-kit --log-opt max-size=1m --log-opt max-file=1 -p 8019:8080 -p 3201:3101 -p 8899:8899 -p 20019:20022 -e "REMOTE_SNAPSHOT_SERVER=eyecool-cpp-grpc_beta:50050" -e "MATCH_LIBRARY=Test" -p 50063:50053 -e "RTSPURLS=rtsp://admin:admin@192.168.0.99:8557/h264|rtsp://admin:admin@192.168.0.203:8557/h264" -e "ZENITH_URL=zenith://192.168.0.99|zenith://192.168.0.203" -e "DOORMONITORS=" -e "WH=1280x720" -e "QUALITY=3" -e "TTS=" -p 5201:5101 -p 6201:6101 -p 7201:7101 -e "REDUCE_FRAME=16" -e "BLOCKSWITCHS=0" -e "VIDEOSWITCHS=0" -e "DbLoad=1" -e "SENDIMG=1" -e "AXISURL=http://wrt.qhkly.com:13080/test" -e "RTSPXS=x1|x1" registry.eyecool.cn:5080/eyecool-golang-grpc:v15
+#docker rm -f face-kit; docker run -it --label=com.centurylinklabs.watchtower.enable=true --volumes-from x11-bridge -e DISPLAY=:14 -v /:/host --link eyecool-cpp-grpc_beta:eyecool-cpp-grpc_beta --link mysql:mysql --privileged -e "AdminPass=" -e "AlgoVersion=1030" -e "OldAlgoVersion=feature" -e "GitUser=jiayiqiu" -e "GitPass=jiayq007" -v ~/docker/golang_beta:/golang -v ~/docker/golang-public_beta:/public -v ~/docker/node_beta:/node -v ~/docker/cpp_beta:/cpp -e "FaceAddress=eyecool-cpp-grpc_beta:50052" -e "FaceMatchAddress=eyecool-cpp-grpc_beta:50051" -e "DbHost=mysql" -e "Database=io-grpc_beta" -e "DbUsername=root" -e "DbPassword=ys1234567" -e "LEVEL=beta" --name face-kit --log-opt max-size=1m --log-opt max-file=1 -p 8019:8080 -p 3201:3101 -p 8899:8899 -p 20019:20022 -e "REMOTE_SNAPSHOT_SERVER=eyecool-cpp-grpc_beta:50050" -e "MATCH_LIBRARY=Test" -p 50063:50053 -e "RTSPURLS=rtsp://admin:admin@192.168.0.99:8557/h264|rtsp://admin:admin@192.168.0.203:8557/h264" -e "ZENITH_URL=zenith://192.168.0.99|zenith://192.168.0.203" -e "DOORMONITORS=" -e "WH=1280x720" -e "QUALITY=3" -e "TTS=" -p 5201:5101 -p 6201:6101 -p 7201:7101 -e "REDUCE_FRAME=16" -e "BLOCKSWITCHS=0" -e "VIDEOSWITCHS=0" -e "DbLoad=1" -e "SENDIMG=1" -e "AXISURL=http://wrt.qhkly.com:13080/test" -e "RTSPXS=x1|x1" land007/face-kit:latest
 #访问
 #http://192.168.0.96:8008
 
 #cd ~/docker_golang && sudo docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t land007/golang --push . && cd ~/docker_golang-grpc && sudo docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t land007/golang-grpc --push . && cd ~/docker_gocv && sudo docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t land007/gocv --push . && cd ~/docker_golang-web && sudo docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t land007/golang-web --push . && cd ~/docker_golang-node && sudo docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t land007/docker_golang-node --push . && cd ~/docker_golang-tfjs-face && sudo docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t land007/golang-tfjs-face --push .
 #docker build -t land007/face-kit:latest .
 #docker rm -f face-kit ; docker run -it --rm --privileged --runtime nvidia --name face-kit land007/face-kit:latest
+#docker build -t land007/l4t-face-kit:latest .
 #docker rm -f l4t-face-kit ; docker run -it --rm --privileged --runtime nvidia --name l4t-face-kit land007/l4t-face-kit:latest
 #docker rm -f l4t-face-kit ; docker run -it --rm --privileged --runtime nvidia -e "AdminPass=" -e "OldAlgoVersion=feature" -e "FaceAddress=127.0.0.1:50052" -e "FaceMatchAddress=127.0.0.1:50051" -e "DbHost=172.17.0.1" -e "Database=io-grpc_beta" -e "DbUsername=root" -e "DbPassword=gmtools" -e "LEVEL=beta" --log-opt max-size=1m --log-opt max-file=1 -p 8019:8080 -p 3201:3101 -p 8899:8899 -p 20119:20022 -e "REMOTE_SNAPSHOT_SERVER=127.0.0.1:50050" -e "MATCH_LIBRARY=Test" -p 50063:50053 -e "DOORMONITORS=" -e "WH=1280x720" -e "QUALITY=3" -e "TTS=" -p 5201:5101 -p 6201:6101 -p 7201:7101 -e "REDUCE_FRAME=16" -e "BLOCKSWITCHS=0" -e "VIDEOSWITCHS=0" -e "DbLoad=0" -e "SENDIMG=1" --name l4t-face-kit land007/l4t-face-kit:latest
 #docker exec -it l4t-face-kit bash

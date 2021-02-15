@@ -2,7 +2,8 @@
 FROM land007/l4t-golang-tfjs-face:latest
 #docker build -t land007/l4t-face-kit:latest .
 #cd ~/docker_build/l4t-golang-node && docker build -t land007/l4t-golang-node . && cd ~/docker_build/l4t-golang-tfjs && docker build -t land007/l4t-golang-tfjs-face . && cd ~/docker_build/l4t-face-kit && docker build -t land007/face-kit .
-#docker rm -f face-kit ; docker run -it --rm --privileged --runtime nvidia --name face-kit land007/l4t-face-kit:latest
+#docker rm -f l4t-face-kit ; docker run -it --rm --privileged --runtime nvidia --name l4t-face-kit land007/l4t-face-kit:latest
+#docker exec -it l4t-face-kit bash
 #/check.sh /node; /checkOne.sh /golang; /etc/init.d/ssh start
 
 MAINTAINER Yiqiu Jia <yiqiujia@hotmail.com>
@@ -223,20 +224,23 @@ ADD pty.js /node_modules/pty.js
 
 RUN . $HOME/.nvm/nvm.sh && nvm install 9.11.2
 
-RUN rm -rf /usr/local/go/path/src/github.com
-ADD github.com.tar.gz /usr/local/go/path/src/
+#RUN rm -rf /usr/local/go/path/src/github.com
+#ADD github.com.tar.gz /usr/local/go/path/src/
 #ADD src/github.com /usr/local/go/path/src/github.com
-RUN rm -rf /usr/local/go/path/src/google.golang.org/grpc
-ADD src/google.golang.org/grpc /usr/local/go/path/src/google.golang.org/grpc
-RUN go get -u github.com/kataras/neffos && \
-    go get -u github.com/gobwas/ws && \
-    go get -u github.com/gorilla/websocket && \
-    go get github.com/nats-io/nats.go/
+#RUN rm -rf /usr/local/go/path/src/google.golang.org/grpc
+#ADD src/google.golang.org/grpc /usr/local/go/path/src/google.golang.org/grpc
+#RUN go get -u github.com/kataras/neffos && \
+#    go get -u github.com/gobwas/ws && \
+#    go get -u github.com/gorilla/websocket && \
+#    go get github.com/nats-io/nats.go/
 #RUN export https_proxy=http://jiayiqiu.vicp.net:28000 && \
 #    go get -u github.com/mediocregopher/radix && \
 #    go get -u google.golang.org/grpc && \
 #    export https_proxy=
-#RUN cd /golang_ && go build main.go
+RUN cd /golang_ && go build main.go
+
+RUN sed -i "s/^#PermitRootLogin prohibit-password/PermitRootLogin yes/g" /etc/ssh/sshd_config && \
+    sed -i 's/#Port 20022/Port 20022/g' /etc/ssh/sshd_config
 
 CMD /check.sh /node; /checkOne.sh /golang; /etc/init.d/ssh start; /node/start.sh
 
@@ -250,3 +254,6 @@ CMD /check.sh /node; /checkOne.sh /golang; /etc/init.d/ssh start; /node/start.sh
 #cd ~/docker_golang && sudo docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t land007/golang --push . && cd ~/docker_golang-grpc && sudo docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t land007/golang-grpc --push . && cd ~/docker_gocv && sudo docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t land007/gocv --push . && cd ~/docker_golang-web && sudo docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t land007/golang-web --push . && cd ~/docker_golang-node && sudo docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t land007/docker_golang-node --push . && cd ~/docker_golang-tfjs-face && sudo docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t land007/golang-tfjs-face --push .
 #docker build -t land007/face-kit:latest .
 #docker rm -f face-kit ; docker run -it --rm --privileged --runtime nvidia --name face-kit land007/face-kit:latest
+#docker rm -f l4t-face-kit ; docker run -it --rm --privileged --runtime nvidia --name l4t-face-kit land007/l4t-face-kit:latest
+#docker rm -f l4t-face-kit ; docker run -it --rm --privileged --runtime nvidia -e "AdminPass=" -e "OldAlgoVersion=feature" -e "FaceAddress=127.0.0.1:50052" -e "FaceMatchAddress=127.0.0.1:50051" -e "DbHost=172.17.0.1" -e "Database=io-grpc_beta" -e "DbUsername=root" -e "DbPassword=gmtools" -e "LEVEL=beta" --log-opt max-size=1m --log-opt max-file=1 -p 8019:8080 -p 3201:3101 -p 8899:8899 -p 20119:20022 -e "REMOTE_SNAPSHOT_SERVER=127.0.0.1:50050" -e "MATCH_LIBRARY=Test" -p 50063:50053 -e "DOORMONITORS=" -e "WH=1280x720" -e "QUALITY=3" -e "TTS=" -p 5201:5101 -p 6201:6101 -p 7201:7101 -e "REDUCE_FRAME=16" -e "BLOCKSWITCHS=0" -e "VIDEOSWITCHS=0" -e "DbLoad=0" -e "SENDIMG=1" --name l4t-face-kit land007/l4t-face-kit:latest
+#docker exec -it l4t-face-kit bash

@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "eyecool.face";
+option java_outer_classname = "SnapshotProtos";
+option objc_class_prefix = "ECSNAPSHOT";
+
+import "face.proto";
+
+package snapshot_service;
+
+// Interface exported by the snapshot server.
+service SnapshotService {
+  // Get a stream of face cropping box coordinates from video frames.
+  rpc GetCroppingBox(SnapshotRequest) returns (stream face_service.CroppingBox) {}
+
+  // Get a snapshot picture of a video stream
+  rpc GetVideoSnapshot(SnapshotRequest) returns (face_service.Image) {}
+
+}
+
+message SnapshotRequest {
+  // The index of video source to fetch face cropping box information.
+  int32 video_source_index = 1;
+}

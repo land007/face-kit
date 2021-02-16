@@ -1,0 +1,190 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "eyecool.face.parameter";
+option java_outer_classname = "FaceParameterProtos";
+option objc_class_prefix = "ECFACEPARAMETER";
+
+import "face.proto";
+
+package face_parameter_service;
+
+// Interface exported by the face parameter service.
+service FaceParameterService {
+  // The interface to update Snapshot parameters in the parameter service
+  rpc UpdateSnapshotParameter(SnapshotParameter) returns (Empty) {}
+
+  // The interface to retrieve snapshot parameters in the parameter service
+  rpc GetSnapshotParameter(Empty) returns (SnapshotParameter) {}
+}
+
+// ServiceParameter is a collection of service addresses and ports
+message ServiceParameter {
+  // The face service provides face detection, face antispoof, and face feature
+  // extraction
+  string face_service_address = 1;
+  int32 face_service_port = 2;
+
+  // The face match service provides face feature matching, 1:1 or 1:N
+  string match_service_address = 3;
+  int32 match_service_port = 4;
+
+  // The application service to receive the matched results.
+  string application_service_address = 5;
+  int32 application_service_port = 6;
+}
+
+// SnapshotParameter is a collection of parameters used by the face
+// snapshot service.
+message SnapshotParameter {
+  // A list of video URL's to be monitored, for RSTP stream it would be
+  // something like rtsp://admin:admin@10.2.0.106:554/media/live/1/1
+  // For USB camera, it is simply the index of the USB camera.
+  repeated string video_url = 1;
+
+  // The ID's of video cameras, used to denote the source of each face image.
+  repeated string video_id = 35;
+  
+  // Information of several face services
+  ServiceParameter service_parameter = 2;
+  
+  // The maximum number of threads for face feature extraction
+  int32 max_feature_thread = 3;
+
+  // The maximum number of threads for face feature matching.
+  int32 max_match_thread = 5;
+
+  // The maximum number of threads for face feature matching.
+  int32 max_dispatch_thread = 6;
+
+  // The maximum size of the queue of captured video frames
+  int32 max_queue_frames = 7;
+
+  // The maximum size of the queue of detected faces
+  int32 max_queue_faces = 8;
+  
+  // The maximum size of queue of features to be matched
+  int32 max_queue_features = 9;
+
+  // The maximum size of queue of the results to be dispatched
+  int32 max_queue_dispatch = 10;
+
+  // The size of queue to store images which to be save
+  int32 max_queue_save = 24;
+
+  // Whether we should show alive video on screen.
+  bool show_video = 11; 
+
+  // Whether we should save video frames.
+  bool save_frame = 25; 
+  string frame_save_path = 26;
+
+  // Whether we should save detected faces.
+  bool save_face = 27;
+  string face_save_path = 28;
+
+  // Whether we should save faces with feature extracted.
+  bool save_feature_face = 29;  
+  string feature_face_save_path = 30;
+
+  // Whether we should save faces with ID matched.
+  bool save_match_face = 31;  
+  string match_face_save_path = 32;
+
+  // Whether we should save best detected faces.
+  bool save_best_face = 33;
+  string best_face_save_path = 34;
+
+  // The maximum angle for a detected face to be sent to extract features.
+  // We use three angles: roll, yaw, and pitch. Each of them must meet the
+  // criteria.
+  int32 maximum_pose_deviation = 12;
+
+  // The time to wait before extracting the first face feature of the same face
+  int32 initial_lapse_time = 14;
+
+  // The time to wait between two feature extractions.
+  int32 consecutive_lapse_time = 15;
+
+  // The minimum time to wait before we send the same identity id to
+  // the application server.
+  int32 minimum_dedupe_time = 16;
+  
+  // The time to wait before we determine the person disappeared from video
+  // and we should send the stored face image to face extraction
+  int32 last_seen_lapse_time = 17;
+
+  // Whether or not we would use the standard match service. If false, we
+  // would skip match step and send the information to the application server
+  // directly. In this case, the application server is very likely to receive
+  // multiple requests from the same person in a short amount of time because
+  // we cannot differentiate if two requests are really the same person or not.
+  bool use_match_service = 18;
+  
+  // Whether we should check for anti-spoof
+  bool check_liveness = 19;
+
+  // The maximum threshold (0 - 1) to determin if a detected face is a
+  // real person
+  double liveness_threshold = 20;
+
+  // The minimum threshold (0 - 100) to determin if two features are the
+  // same person.
+  double match_threshold = 21;
+
+  // The time this set of parameter is updated, represented as milliseconds
+  // from the epoch.
+  int64 update_time = 22;
+
+  // The information of requestor.
+  face_service.Requestor requestor = 23;
+
+  // The minimum threshold (0 - 100) of image quality
+  double image_quality_threshold = 36;
+
+  // Whether we will dispatch every detected face image to the application
+  // server.
+  bool dispatch_face = 37;
+
+  // Whether we will dispatch the best face image to the application
+  // server.
+  bool dispatch_best_face = 38;
+
+  // Whether we will dispatch the best face image with feature to the
+  // application server.
+  bool dispatch_feature_face = 39;
+
+  // Whether Snapshot will connect to the parameter service to update
+  // parameters.
+  bool parameter_update = 40;
+
+  // The waiting time between two parameter updates.
+  int32 parameter_update_time = 41;
+
+  // A list of face feature library names to be used in face match.
+  repeated string match_library = 42;  
+
+  // 0: show all detection log; 1: show best detected face log;
+  // 2: show no detection log.
+  int32 detection_log = 43;
+
+  // 0: show all feature log; 1: show only extracted feature log;
+  // 2: No feature log
+  int32 feature_log = 44;
+
+  // If a face id is matched to an identit id, we will wait some time
+  // before we extract feature again for the same face id. Feature
+  // extraction is an expensive computing job.
+  int32 matched_face_feature_lapse_time = 50;
+
+  // Whether or not we should run face detection. With face detection,
+  // there will no further actions: feature extraction, 1:N match,
+  // and dispatch.
+  bool face_detection = 51;
+
+  bool dispatch_stranger_face = 52;
+
+};
+
+message Empty {
+}

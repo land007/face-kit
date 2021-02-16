@@ -93,7 +93,7 @@ RUN chmod +x /golang_/heap.sh && \
 	chmod +x /golang_/heap_svg.sh
 #node.js
 RUN apt-get install -y pkg-config && \
-    . $HOME/.nvm/nvm.sh && cd / && npm install -g node-pre-gyp && npm install @tensorflow/tfjs@1.5.1 @tensorflow/tfjs-node@1.5.1 face-api.js axios soap easy-soap-request xml-js && \
+    . $HOME/.nvm/nvm.sh && cd / && npm install -g node-pre-gyp ts-node typescript && npm install @tensorflow/tfjs@1.5.1 @tensorflow/tfjs-node@1.5.1 face-api.js axios soap easy-soap-request xml-js && \
     . $HOME/.nvm/nvm.sh && cd /node_modules/@tensorflow/tfjs-node && node-pre-gyp install --build-from-source && \
     rm -rf /node_/node_modules
 #face

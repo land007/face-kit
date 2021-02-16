@@ -193,7 +193,7 @@ ENV ZENITH_URL="" \
 #	RTSPXS="x1|x1|x1|x1"
 #	RTSPXS="x1,x2|x1,x2|x1|x1"
 #face-api.js
-RUN cd /node_/face-api.js/examples/examples-nodejs && tsc --skipLibCheck faceRecognition.ts
+RUN . $HOME/.nvm/nvm.sh && cd /node_/face-api.js/examples/examples-nodejs && tsc --skipLibCheck faceRecognition.ts
 ADD node/face-api.js/examples/examples-nodejs/face_grpc2.js /node_/face-api.js/examples/examples-nodejs/
 ADD node/face-api.js/examples/examples-nodejs/match_grpc2.js /node_/face-api.js/examples/examples-nodejs/
 ADD node/face-api.js/examples/examples-nodejs/commons/faceDetection.js /node_/face-api.js/examples/examples-nodejs/commons/
